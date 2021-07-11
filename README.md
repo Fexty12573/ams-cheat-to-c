@@ -9,7 +9,7 @@ Full documentation on atmosphere cheat codes can be found [here](https://github.
 ## Usage
 Simply drag and drop a cheat file onto the exe or launch it and manually enter a file path.
 
-Output will be in the same folder as the exe with the name `out.c`
+Output will be in the same folder as the input file with format `<inputname>.c`
 
 ```
 atmosphere-cheat-to-c path/to/file
