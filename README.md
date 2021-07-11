@@ -4,6 +4,8 @@ Convert Atmosphere cheat codes to a more readable format, in the form of C 'pseu
 Note that while this makes codes more readable, you still need some understanding of the concepts used within them.
 For example: pointers, if-statements, loops, etc. Pointers being the most important of the bunch.
 
+Full documentation on atmosphere cheat codes can be found [here](https://github.com/Atmosphere-NX/Atmosphere/blob/master/docs/features/cheats.md)
+
 ## Usage
 Simply drag and drop a cheat file onto the exe or launch it and manually enter a file path.
 
@@ -27,5 +29,3 @@ void Cheat() {
   // code
 }
 ```
-
-Full documentation on atmosphere cheat codes can be found [here](https://github.com/Atmosphere-NX/Atmosphere/blob/master/docs/features/cheats.md)
