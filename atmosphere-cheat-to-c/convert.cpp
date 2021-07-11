@@ -28,10 +28,10 @@ std::map<char, const char*> RegSuffix = {
 };
 
 std::map<char, const char*> Datatypes = {
-	{'1', "byte"},
-	{'2', "word"},
-	{'4', "dword"},
-	{'8', "qword"}
+	{'1', "u8"},
+	{'2', "u16"},
+	{'4', "u32"},
+	{'8', "u64"}
 };
 
 std::map<char, const char*> Regions = {

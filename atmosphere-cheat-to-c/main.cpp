@@ -8,9 +8,11 @@ int main(int argc, char* argv[])
 {
 	if (argc > 1)
 	{
+		std::string file(argv[1]);
+
 		CheatCodeParser cheatparser(argv[1]);
 
-		std::ofstream outfile("out.c");
+		std::ofstream outfile(file.replace(file.rfind('.') + 1, 3, "c"));
 
 		const std::string& out = cheatparser.Parse();
 		outfile.write(out.data(), out.size());
@@ -23,7 +25,7 @@ int main(int argc, char* argv[])
 
 		CheatCodeParser cheatparser(file);
 
-		std::ofstream outfile("out.c");
+		std::ofstream outfile(file.replace(file.rfind('.') + 1, 3, "c"));
 
 		const std::string& out = cheatparser.Parse();
 		outfile.write(out.data(), out.size());

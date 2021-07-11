@@ -14,11 +14,13 @@ const std::string& CheatCodeParser::Parse()
 {
 	std::string line;
 
-	AddOutputLine("typedef unsigned char byte;\n");
-	AddOutputLine("typedef unsigned short word;\n");
-	AddOutputLine("typedef unsigned int dword;\n");
-	AddOutputLine("typedef unsigned long long qword;\n");
-
+	AddOutputLine("typedef unsigned char u8;\n");
+	AddOutputLine("typedef unsigned short u16;\n");
+	AddOutputLine("typedef unsigned int u32;\n");
+	AddOutputLine("typedef unsigned long long u64;\n");
+	AddOutputLine("// Declarations so intellisense can do nice syntax highlighting :)\n");
+	AddOutputLine("u64 Main, Heap;\n");
+	AddOutputLine("_Bool AreKeysPressed(u32);\n");
 
 	while (std::getline(file, line))
 	{
@@ -44,7 +46,7 @@ void CheatCodeParser::ParseLine(const std::string& line)
 		AddOutputLine("void Cheat() {\n");
 		numIndents = 1;
 
-		std::string regs = "\tqword ";
+		std::string regs = "\tu64 ";
 		for (auto& [i, reg] : Registers)
 		{
 			regs += reg;
@@ -124,7 +126,7 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 		ReadValue(line, ptr, value);
 
 		char nl[100] = { 0 };
-		sprintf_s(nl, 100, "(*(%s*)(%s + 0x%s)) = (%s)0x%s // using %s%s as offset register\n",
+		sprintf_s(nl, 100, "(*(%s*)(%s + 0x%s)) = (%s)0x%s; // using %s%s as offset register\n",
 			Datatypes[datatype], Regions[region], addr,
 			Datatypes[datatype], value, Registers[reg], RegSuffix[regsuffix]);
 
@@ -161,11 +163,15 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 	}
 	case CodeType::END_CONDITIONAL: // Type 2
 	{
-		numIndents--;
-		std::string nl = "";
-		PrependIndents(nl);
+		if (numIndents > 1)
+		{
+			numIndents--;
+			std::string nl = "";
+			PrependIndents(nl);
 
-		AddOutputLine(nl + "}\n");
+			AddOutputLine(nl + "}\n");
+		}
+		
 		break;
 	}
 	case CodeType::LOOP_START_END: // Type 3
@@ -495,8 +501,8 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 			char value[17] = { 0 };
 			ReadValue(line, ptr, value, datatype);
 
-			sprintf_s(nl, 60, "if (%s%s %s (*(%s*)(0x%s))) {\n", Registers[sourcereg], RegSuffix[datatype],
-				Comparisons[operation], Datatypes[datatype], value);
+			sprintf_s(nl, 60, "if (%s%s %s 0x%s) {\n", Registers[sourcereg], RegSuffix[datatype],
+				Comparisons[operation], value);
 			break;
 		}
 		case '5':
@@ -735,6 +741,8 @@ void CheatCodeParser::ReadValue(const std::string& line, size_t& ptr, char* valu
 	{
 		GotoNextDWord(line, ptr);
 
+		if (ptr == line.size()) ptr -= 8; // Accidentally passed last Dword
+
 		while (i < 9 && ptr < line.size())
 		{
 			if (line[ptr] != ' ')
@@ -789,6 +797,13 @@ void CheatCodeParser::GotoNextDWord(const std::string& line, size_t& ptr)
 
 void CheatCodeParser::FinishOutput()
 {
-	numIndents = 0;
-	output += "}\n";
+	while (numIndents > 0)
+	{
+		--numIndents;
+
+		std::string brace = "}\n";
+		PrependIndents(brace);
+
+		output += brace;
+	}
 }
