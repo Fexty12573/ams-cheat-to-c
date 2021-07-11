@@ -146,6 +146,7 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 		char datatype = line[ptr++];
 		char region = line[ptr++];
 		char comparison = line[ptr++];
+		ptr += 2;
 
 		char addr[11] = { 0 };
 		ReadAddress(line, ptr, addr);
@@ -154,13 +155,12 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 		ReadValue(line, ptr, value, datatype);
 
 		char nl[60] = { 0 };
-		sprintf_s(nl, 60, "\tif ((*(%s*)(%s + 0x%s)) %s 0x%s) {\n", Datatypes[datatype], 
-			Regions[region], addr, Comparisons[comparison], value);
+		sprintf_s(nl, 60, "if ((*(%s*)(%s + 0x%s)) %s (%s)0x%s) {\n", Datatypes[datatype], 
+			Regions[region], addr, Comparisons[comparison], Datatypes[datatype], value);
 
-		std::string nl_(line);
+		std::string nl_(nl);
 		PrependIndents(nl_);
 
-		std::cout << nl_ << std::endl;
 		AddOutputLine(nl_);
 
 		numIndents++;

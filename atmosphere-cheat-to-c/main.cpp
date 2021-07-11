@@ -6,9 +6,11 @@
 
 int main(int argc, char* argv[])
 {
+	std::string file;
+
 	if (argc > 1)
 	{
-		std::string file(argv[1]);
+		file = argv[1];
 
 		CheatCodeParser cheatparser(argv[1]);
 
@@ -19,7 +21,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::string file;
 		std::cout << "Enter filepath: ";
 		std::getline(std::cin, file);
 
@@ -31,7 +32,7 @@ int main(int argc, char* argv[])
 		outfile.write(out.data(), out.size());
 	}
 
-	std::cout << "Result written to out.c\nHit Enter to exit.";
+	std::cout << "Result written to " << file << "\nHit Enter to exit.";
 	std::cin.get();
 
 	return 0;
