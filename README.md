@@ -27,3 +27,5 @@ void Cheat() {
   // code
 }
 ```
+
+Full documentation on atmosphere cheat codes can be found [here](https://github.com/Atmosphere-NX/Atmosphere/blob/master/docs/features/cheats.md)
