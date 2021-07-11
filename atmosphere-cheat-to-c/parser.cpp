@@ -20,7 +20,12 @@ const std::string& CheatCodeParser::Parse()
 	AddOutputLine("typedef unsigned long long u64;\n");
 	AddOutputLine("// Declarations so intellisense can do nice syntax highlighting :)\n");
 	AddOutputLine("u64 Main, Heap;\n");
-	AddOutputLine("_Bool AreKeysPressed(u32);\n");
+	AddOutputLine("_Bool AreKeysPressed(u32);\n\n");
+
+	AddOutputLine("// Register suffixes:\n");
+	AddOutputLine("// - D: Lower 4 bytes of the register\n");
+	AddOutputLine("// - W: Lowest 2 bytes of the register\n");
+	AddOutputLine("// - B: Lowest byte of the register\n\n");
 
 	while (std::getline(file, line))
 	{
