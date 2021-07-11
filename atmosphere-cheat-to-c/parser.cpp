@@ -771,7 +771,7 @@ void CheatCodeParser::ReadCount(const std::string& line, size_t& ptr, char* coun
 
 void CheatCodeParser::ReadKey(const std::string& line, size_t& ptr, char* keymap)
 {
-	for (int i = 0; i < 7, ptr < line.size(); i++, ptr++) keymap[i] = line[ptr];
+	for (int i = 0; i < 7 && ptr < line.size(); i++, ptr++) keymap[i] = line[ptr];
 }
 
 void CheatCodeParser::ReadOffset(const std::string& line, size_t& ptr, char* offset)
