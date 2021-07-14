@@ -216,8 +216,8 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 	}
 	case CodeType::LOAD_REGISTER_STATIC: // Type 4
 	{
-		ptr += 2;
-		const char* reg = Registers[ptr];
+		ptr += 3;
+		const char* reg = Registers[line[ptr++]];
 
 		GotoNextDWord(line, ptr);
 
@@ -225,7 +225,7 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 		ReadValue(line, ptr, value, '8');
 
 		char nl[30] = { 0 };
-		sprintf_s(nl, 30, "%s = %d;\n", reg, strtol(value, NULL, 16));
+		sprintf_s(nl, 30, "%s = %d;\n", reg, strtoll(value, NULL, 16));
 
 		std::string nl_(nl);
 		PrependIndents(nl_);
@@ -447,6 +447,15 @@ void CheatCodeParser::ParseCodetype(CodeType type, const std::string& line, size
 		PrependIndents(nl_);
 
 		AddOutputLine(nl_);
+
+		if (inc == '1')
+		{
+			sprintf_s(nl, 60, "%s%s += (%s)%c;\n", Registers[basereg], suffix, Datatypes[datatype], datatype);
+			nl_ = std::string(nl);
+			PrependIndents(nl_);
+			AddOutputLine(nl_);
+		}
+
 		break;
 	}
 	case CodeType::RESERVED: // Type B
